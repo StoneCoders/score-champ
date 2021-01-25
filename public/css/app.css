@@ -1,0 +1,44 @@
+
+body {
+  direction: rtl;
+  padding-top: 50px;
+}
+
+.nopadding {
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+.bootstrap-datetimepicker-widget * {
+  direction: ltr;
+}
+
+.starter-template {
+  padding: 30px 15px;
+}
+
+select.flags {
+  direction: ltr;
+}
+
+
+.game_date-DatetimePicker span.input-group-addon {
+  padding: 6px 12px;
+}
+
+.jumbotron.flex {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+.jumbotron.flex h2,
+.jumbotron.flex div.form-group.full-row {
+  flex: 1 0 100%;
+}
+.jumbotron.flex div.form-group {
+    flex: 1 1 45%;
+    margin: auto 10px 15px;
+}
+.jumbotron.flex div.form-group.thirty {
+    flex: 1 1 30%;
+}

@@ -1,0 +1,66 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: mysql-pv-claim
+  labels:
+    app: euro-champ-v2
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 100Gi
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: euro-champ-v2-mysql
+  labels:
+    app: euro-champ-v2
+spec:
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: euro-champ-v2
+        tier: mysql
+    spec:
+      containers:
+      - image: mysql:5.6
+        name: mysql
+        env:
+          # $ kubectl create secret generic mysql-pass --from-file=secrets.yaml
+          # make sure secrets.yaml does not have a trailing newline
+        - name: MYSQL_ROOT_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: euro-champ-secrets
+              key: mysql-root
+        - name: MYSQL_DATABASE
+          valueFrom:
+            secretKeyRef:
+              name: euro-champ-secrets
+              key: mysql-database
+        - name: MYSQL_USER
+          valueFrom:
+            secretKeyRef:
+              name: euro-champ-secrets
+              key: mysql-username
+        - name: MYSQL_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: euro-champ-secrets
+              key: mysql-username-pass
+        ports:
+        - containerPort: 3306
+          name: mysql
+        volumeMounts:
+        - name: mysql-persistent-storage
+          mountPath: /var/lib/mysql
+      nodeSelector:
+          cloud.google.com/gke-nodepool: default-pool
+      volumes:
+      - name: mysql-persistent-storage
+        persistentVolumeClaim:
+          claimName: mysql-pv-claim

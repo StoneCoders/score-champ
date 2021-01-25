@@ -1,0 +1,22 @@
+DOCKER - UPLOAD NEW VERSION
+======
+git push origin master
+# WAIT FOR BUILD FINISHED
+# GET TAG FROM https://console.cloud.google.com/gcr/images/willer-1343/GLOBAL/bitbucket-compie-israel-eurochamp-backend?project=willer-1343
+# change container image TAG in yamls/web-deployment.yaml
+
+gcloud container clusters get-credentials php-cluster-ec --zone europe-west1-c --project willer-1343
+kubectl replace -f yamls/web-deployment.yaml
+
+
+
+
+
+
+
+
+
+
+==== SSH ====
+kubectl get pods
+kubectl exec POD_NAME -i -t bash

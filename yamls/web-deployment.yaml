@@ -1,0 +1,31 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: euro-champ-v2
+  labels:
+    app: euro-champ-v2
+spec:
+  strategy:
+    type: RollingUpdate
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: euro-champ-v2
+        tier: frontend
+    spec:
+      containers:
+      - image: gcr.io/willer-1343/bitbucket-compie-israel-eurochamp-backend:ef95839b09d46f46fcf8359926cd8df9638a47eb
+        name: euro-champ-v2
+        ports:
+        - containerPort: 80
+          name: euro-champ-v2
+        volumeMounts:
+        - name: web-persistent-storage
+          mountPath: /var/www/html/public/images
+      nodeSelector:
+          cloud.google.com/gke-nodepool: app-pool
+      volumes:
+      - name: web-persistent-storage
+        persistentVolumeClaim:
+          claimName: web-pv-claim

@@ -1,0 +1,15 @@
+/vendor
+/.idea
+.idea
+.idea/
+.idea/*
+/node_modules
+/public/storage
+Homestead.yaml
+Homestead.json
+.env
+.env_prod
+composer.lock
+storage/
+vandor/
+public/images

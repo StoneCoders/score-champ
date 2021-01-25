@@ -1,0 +1,47 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: phpmyadmin
+  labels:
+    app: euro-champ-admin
+    tier: admin
+spec:
+  strategy:
+    type: Recreate
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: euro-champ-admin
+        tier: admin
+    spec:
+      containers:
+      - image: phpmyadmin/phpmyadmin
+        name: phpmyadmin
+        env:
+        - name: MYSQL_ROOT_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: euro-champ-secrets
+              key: mysql-root
+        - name: MYSQL_USER
+          valueFrom:
+            secretKeyRef:
+              name: euro-champ-secrets
+              key: mysql-username
+        - name: MYSQL_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: euro-champ-secrets
+              key: mysql-username-pass
+        - name: PMA_HOST
+          value: euro-champ-mysql
+        volumeMounts:
+        - mountPath: /sessions
+          name: sessions
+        ports:
+        - containerPort: 8080
+          name: phpmyadmin
+      volumes:
+      - name: sessions
+        emptyDir: {}
